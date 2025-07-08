@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="triqui.css">
+    <title>Triqui</title>
+</head>
+<body>
+  <h1 class="neonbt">
+    <span class="neon animated">Triqui</span>
+  </h1>
+  <div class="turno" id="turno"></div>
+    <div class="contenedor">
+        <table class="triqui branimated">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+        </table>
+    </div>
+    <div class="botones ">
+    <button id="iniciar">Iniciar juego</button>
+    <button id="reiniciar">Jugar de nuevo</button>
+    </div>
+</body>
+<script>
+const table = document.querySelector('.triqui');
+const cells = table.querySelectorAll('td');
+const turnoDiv = document.querySelector('#turno');
+const iniciarBtn = document.querySelector('#iniciar');
+const reiniciarBtn = document.querySelector('#reiniciar');
+const combinacionesGanadoras = {
+  fila1: [0, 1, 2],
+  fila2: [3, 4, 5],
+  fila3: [6, 7, 8],
+  columna1: [0, 3, 6],
+  columna2: [1, 4, 7],
+  columna3: [2, 5, 8],
+  diagonal1: [0, 4, 8],
+  diagonal2: [2, 4, 6],
+};
+
+let jugador = "X";
+let juegoEnCurso = false;
+
+// Función que cambia el turno del jugador ***************************
+function cambiarTurno() {
+  jugador = jugador === "X" ? "O" : "X";
+  turnoDiv.innerHTML = `Turno de jugador ${jugador}`;
+}
+
+// Funcion que verifica si un jugador ha ganado ***********************
+function verificarGanador() {
+  // Recorrer combinaciones ganadoras
+  for (let combo in combinacionesGanadoras) {
+  // Indicador de victoria en la combinacion actual
+  let ganador = true;
+    // Recorrer las las casillas correspondientes a la combinacion actual
+  for (let i = 0; i < combinacionesGanadoras[combo].length; i++) {
+    // El if lo que va a hacer es mirar si la celda[i] de la combinacion actual[combo] pertenece ya al jugador actual ("X" u "O")
+    if (cells[combinacionesGanadoras[combo][i]].innerHTML !== jugador) {
+      // En caso de que no pertenezca al jugador directamente sale porque no hay un ganador en dicha combinacion
+      ganador = false;
+      break;
+      }
+    }
+    // Retorna ganador en combinacion actual
+    if (ganador) {
+      return true;
+    }
+  }
+  //Retorna despues de reccorer todo y no encontrar ganador
+  return false;
+}
+
+/* *************************************
+//Misma funcion de verificacion con for each
+
+function verificarGanador() {
+  //inicializar ganador
+  let ganador = false;
+  // el object retorna un array con valores de las propiedades de un objeto
+  // de modo que optenemos todas las combinaciones ganadoras
+  Object.values(combinacionesGanadoras).forEach((combo) => {
+    // Se agrega por medio de if la condicion de que las 3 celdas de la combinacion que se esta mirando pertenezcan al jugador actual
+    if (
+      cells[combo[0]].innerHTML === jugador &&
+      cells[combo[1]].innerHTML === jugador &&
+      cells[combo[2]].innerHTML === jugador
+    ) {
+      //en caso de que se cumpla se da al jugador como ganador
+      ganador = true;
+    }
+  });
+  //se retorna la variable ganador ya sea como true o false
+  return ganador;
+}
+
+ ************************* */
+
+// Función que se ejecuta al hacer click en una celda **************************
+function celdaClick(event) {
+  //si juego en curso es false se detiene
+  if (!juegoEnCurso) {
+    return;
+  }
+  //si la casilla a la cual se le da click esta ocupada se detiene
+  if (event.target.innerHTML !== "") {
+    return;
+  }
+  // De estar vacia la casilla toma el valor de la varibele jugador ("x" u "O")
+  event.target.innerHTML = jugador;
+/* ************* Intento para modificar el color de las X y O agregandole clases*************
+  // Agregar clase correspondiente
+  if (jugador === "X") {
+    event.target.classList.add("x");
+  } else {
+    event.target.classList.add("o");
+  }
+*/
+  //Verificar ganador para poder reinicar juego
+  if (verificarGanador()) {
+    juegoEnCurso = false;
+    turnoDiv.innerHTML = `¡Las ${jugador} ganan!`;
+    //muestra boton jugar de nuevo una vez hay un ganador
+    reiniciarBtn.style.display = "block";
+  }
+  //se convierte en array el objeto cells 
+  //usando evey miramos si el contenido de cada casilla es diferente de vacio en su html 
+  else if ([...cells].every(cell => cell.innerHTML !== "")) {
+    //si todas las casillas estan ocupadas se declara empate y se muestra el boton de juego nuevo
+    juegoEnCurso = false;
+    turnoDiv.innerHTML = "¡Empate!";
+    reiniciarBtn.style.display = "block";
+  } 
+  // Si no hay ganador y hay celdas vacias cambio de jugador
+  else {
+    cambiarTurno();
+  }
+}
+
+// Función que reinicia el juego ********************************************
+function reiniciarJuego() {
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].innerHTML = "";
+  }
+  jugador = "X";
+  juegoEnCurso = true;
+  turnoDiv.innerHTML = `Turno de jugador ${jugador}`;
+  reiniciarBtn.style.display = "none";
+}
+
+// Agregar evento click a las celdas ************************
+for (let i = 0; i < cells.length; i++) {
+  cells[i].addEventListener('click', celdaClick);
+}
+
+// Agregar evento click al botón iniciar juego ***************
+iniciarBtn.addEventListener('click', function() {
+  juegoEnCurso = true;
+  turnoDiv.innerHTML = `Turno de jugador ${jugador}`;
+});
+
+// Agregar evento click al botón reiniciar juego ******************
+reiniciarBtn.addEventListener('click', reiniciarJuego);
+</script>
+</html>

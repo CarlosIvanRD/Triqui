@@ -1,0 +1,97 @@
+body{
+    background-color: #14181C;
+}
+
+.neonbt{
+    text-align: center;
+}
+.contenedor{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+td, tr{
+        width: 6rem; 
+        color: #fff;
+        height: 6rem; 
+        box-shadow: 0 0 20px #ffffff77, 0 0 5px #fff, 0 0 4px #fff,  0 0 1px #0ff, 0 0 4px #0ff;
+        font-size: 5rem;
+        text-shadow: 0 0 20px #ffffff77, 0 0 5px #fff, 0 0 4px #fff, 0 0 6px #0ff, 0 0 8px #0ff;      
+}
+.turno{
+    padding-bottom: 40px;
+    padding-left: 40px;
+    font-size: 40px;
+    color: #fff;
+    text-shadow: 0 0 20px #ffffff77, 0 0 5px #fff, 0 0 4px #fff, 0 0 6px #0ff, 0 0 8px #0ff;      
+}
+
+
+.triqui{
+    width: 35rem;
+    height: 35rem;  
+}
+
+.neon {
+  font-size: 3em;
+  color: #ffffff5e;
+}
+
+@keyframes neon-animation {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 50px #0ff, 0 0 60px #0ff;
+  }
+  to {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 50px #f0f, 0 0 60px #f0f;
+  }
+}
+@keyframes border-animation {
+    from {
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 50px #0ff, 0 0 60px #0ff;
+      }
+      to {
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 50px #f0f, 0 0 60px #f0f;
+      }
+    }
+    
+.animated {
+  animation: neon-animation 1.5s ease-in-out infinite alternate;
+}
+
+.branimated {
+    animation: border-animation 1.5s ease-in-out infinite alternate;
+ }
+    
+.botones {
+    padding-top:70px ;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+  
+.botones button {
+    margin: 10px;
+    background-color: #14181C;
+    border-style: none;
+    font-size: 30px;
+    color: #ffffff;
+    box-shadow: 0 0 5px #1f1c1c, 0 0 10px #211a1a, 0 0 10px #0ff;
+    border-radius: 5px;
+    text-shadow: 0 0 20px #322d2d77, 0 0 5px #fff, 0 0 4px #fff, 0 0 6px #0ff, 0 0 8px #0ff;      
+}
+  
+/* Intento de modificar el color de las X  y O
+.x {
+  color: red;
+}
+
+.o {
+  color: blue;
+}
+*/
